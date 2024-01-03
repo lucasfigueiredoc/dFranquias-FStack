@@ -63,6 +63,26 @@ class GadoRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    public function findAnimaisUmQuinhentos(){
+
+        $queryBuilder = $this->createQueryBuilder('e');
+
+        $queryBuilder
+        ->andWhere('e.racao > :param2')
+        ->setParameter('param2', 500);
+
+        $dataAtual = new \DateTime();
+        $dataNascimentoMaxima = (new \DateTime())->modify('-1 year');
+
+        $queryBuilder
+        ->andWhere('e.nascimento >= :dataNascimentoMaxima')
+        ->andWhere('e.nascimento <= :dataAtual')
+        ->setParameter('dataNascimentoMaxima', $dataNascimentoMaxima)
+        ->setParameter('dataAtual', $dataAtual);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     ## Função para selecionar animais abatidos
     public function findAnimaisAbatidos(){
         $queryBuilder = $this->createQueryBuilder('e');
@@ -93,6 +113,39 @@ class GadoRepository extends ServiceEntityRepository
         
         return $queryBuilder->getQuery()->getResult();
     }
+
+    #Funçao para somar produçao de leite e consumo de ração total dos animais vivos
+    public function sumValues($tipo)
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+        
+        $sum = $queryBuilder
+        ->select('SUM(e.'.$tipo.') as total')
+        ->andWhere('e.situacao = :situacao')
+        ->setParameter('situacao', 1)
+        ->getQuery()
+        ->getSingleScalarResult();
+
+        return $sum;
+    }
+
+    public function countAnimais($situacao)
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+
+        $count = $queryBuilder
+        ->select('COUNT(e.id) as total')
+        ->andWhere('e.situacao = :situacao')
+        ->setParameter('situacao', $situacao)
+        ->getQuery()
+        ->getSingleScalarResult();
+        return $count;
+
+    }
+
+
+
+
 
 
 
