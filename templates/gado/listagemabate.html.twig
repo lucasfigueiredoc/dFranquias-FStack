@@ -8,52 +8,33 @@
     <table class="table">
         
         <thead>
-
-            <tr>
-                <td>ID</td>
-                <td scope="col">Leite</td>
-                <td scope="col">Ração</td>
-                <td scope="col">Peso</td>
-                <td scope="col">Situação</td>
-                <td scope="col">Nascimento</td>
-            </tr>
-
+        <tr>
+            <td>ID</td>
+            <td scope="col">Leite</td>
+            <td scope="col">Ração</td>
+            <td scope="col">Peso</td>
+            <td scope="col">Situação</td>
+            <td scope="col">Nascimento</td>
+        </tr>
         </thead>
-
         <tbody>
-
-            {% for gado in listagemASCDESC %}
-
+            {% for gado in gadoAbate %}
             <tr>
-
                 <td>{{gado.id}}</td>
                 <td scope="row">{{gado.leite}}</td>
                 <td>{{gado.racao}}</td>
                 <td>{{gado.peso}}</td>
-
-                {%  if gado.situacao == 1 %}
-                <td>Vivo</td>
-                {% endif %}
-                {%  if gado.situacao == 0 %}
-                <td>Abate</td>
-                {% endif %}
-                {%  if gado.situacao == 2 %}
-                <td>Morto, outra razão.</td>
-                {% endif %}
+                <td>{{gado.situacao}}</td>
                 <td>{{gado.nascimento|date('d-m-Y')}}</td>
-
                 <td>
                     <a href="{{path('editar_gado',{id: gado.id})}}" class="btn btn-primary">Editar</a>
-                    <a id="btn-excluir"  data-id="{{ gado.id }}" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#myModal">Excluir</a>
+                    <a id="btn-excluir"  data-id="{{ gado.id }}" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#myModal">Marcar abate!</a>
                 </td>
-
             </tr>
-
             {% endfor %} 
 
         </tbody>
     </table>
-
 
 
 <div class="modal" id="myModal">
@@ -68,13 +49,13 @@
 
             <!-- body -->
             <div class="modal-body">
-                <p>Deseja realmente excluir o animal?</p>
+                <p>Deseja marcar este animal como abatido?</p>
             </div>
 
             <!-- footer -->
             <div class="modal-footer">
                 
-                <a id="excluir" class="btn btn-danger">Sim, Excluir!</a>
+                <a id="excluir" class="btn btn-danger">Sim!</a>
                 <a type="button" href="#" class="close data-dismiss="Não">Sair</a>
             </div>
 
@@ -88,7 +69,7 @@
     $(document).on('click', '#btn-excluir', function (e) {
         a = document.getElementById('excluir');
         const id =  $(this).data('id');
-        a.setAttribute("href", "/gado/excluir/" + id);
+        a.setAttribute("href", "/gado/abater/" + id);
     });
 </script>
 {% endblock %}

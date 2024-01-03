@@ -17,15 +17,21 @@ class Gado
 
 
     #[ORM\Column(nullable: true)]
-    #[Assert\PositiveOrZero]
+    #[Assert\PositiveOrZero(
+        message: 'Valores acima de 0(zero).'
+    )]
     private ?float $leite = null;
 
     #[ORM\Column]
-    #[Assert\PositiveOrZero]
+    #[Assert\PositiveOrZero(
+        message: 'Insira valor positivo para ração.'
+    )]
     private ?float $racao = null;
 
     #[ORM\Column]
-    #[Assert\PositiveOrZero]
+    #[Assert\PositiveOrZero(
+        message: 'Insira valor positivo para peso.'
+    )]
     private ?float $peso = null;
 
     #[ORM\Column]
