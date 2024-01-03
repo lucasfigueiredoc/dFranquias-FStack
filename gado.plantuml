@@ -1,0 +1,10 @@
+@startuml
+    class gado{
+       -Integer codigo
+       -Float leite
+       -Float racao
+       -Float peso 
+       -Integer situacao
+       -Date nascimento
+    }
+@enduml

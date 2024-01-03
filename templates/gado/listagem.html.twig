@@ -1,0 +1,80 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ titulo }} {% endblock %}
+
+{% block body %}
+
+<a href="{{path("adicionar_gado")}}" class="btn btn-primary">Adicionar Gado</a>
+    <table class="table">
+        
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td scope="col">Leite</td>
+            <td scope="col">Ração</td>
+            <td scope="col">Peso</td>
+            <td scope="col">Situação</td>
+            <td scope="col">Nascimento</td>
+        </tr>
+        </thead>
+        <tbody>
+            {% for gado in gados %}
+            <tr>
+                <td>{{gado.id}}</td>
+                <td scope="row">{{gado.peso}}</td>
+                <td>{{gado.racao}}</td>
+                <td>{{gado.peso}}</td>
+                <td>{{gado.situacao}}</td>
+                <td>{{gado.nascimento|date('d-m-Y')}}</td>
+                <td>
+                    <a href="{{path('editar_gado',{id: gado.id})}}" class="btn btn-primary">Editar</a>
+                    <a id="btn-excluir"  data-id="{{ gado.id }}" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#myModal">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %} 
+
+        </tbody>
+    </table>
+
+    <div class="navigation">
+        {{ knp_pagination_render(gados) }}
+    </div>
+
+
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Atenção!</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- body -->
+            <div class="modal-body">
+                <p>Deseja realmente excluir o animal?</p>
+            </div>
+
+            <!-- footer -->
+            <div class="modal-footer">
+                
+                <a id="excluir" class="btn btn-danger">Sim, Excluir!</a>
+                <a type="button" href="#" class="close data-dismiss="Não">Sair</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
+{% block javascripts %}
+<script>
+    $(document).on('click', '#btn-excluir', function (e) {
+        a = document.getElementById('excluir');
+        const id =  $(this).data('id');
+        a.setAttribute("href", "/gado/excluir/" + id);
+    });
+</script>
+{% endblock %}
