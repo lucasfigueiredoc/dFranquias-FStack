@@ -4,10 +4,19 @@
 
 {% block body %}
 
-<a href="{{path("adicionar_gado")}}" class="btn btn-primary">Adicionar Gado</a>
-    <table class="table">
-        
-        <thead>
+{% for message in app.flashes('commit') %}
+<div class='alert alert-success'>
+    {{ message }}
+</div>
+{% endfor %}
+
+            <div class="card-header">
+                <div class="row">
+                    <div class="col align-self-center">
+                        <h4 class="m-0">Animais abatidos</h4>
+                    </div>
+                </div>
+            </div>
         <tr>
             <td>ID</td>
             <td scope="col">Leite</td>
@@ -15,27 +24,42 @@
             <td scope="col">Peso</td>
             <td scope="col">Situação</td>
             <td scope="col">Nascimento</td>
+            <td scope="col"> </td>
         </tr>
-        </thead>
-        <tbody>
-            {% for gado in gadoAbate %}
-            <tr>
-                <td>{{gado.id}}</td>
-                <td scope="row">{{gado.leite}}</td>
-                <td>{{gado.racao}}</td>
-                <td>{{gado.peso}}</td>
-                <td>{{gado.situacao}}</td>
-                <td>{{gado.nascimento|date('d-m-Y')}}</td>
-                <td>
-                    <a href="{{path('editar_gado',{id: gado.id})}}" class="btn btn-primary">Editar</a>
-                    <a id="btn-excluir"  data-id="{{ gado.id }}" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#myModal">Marcar abate!</a>
-                </td>
-            </tr>
-            {% endfor %} 
+    </thead>
+    <tbody>
+        {% for gado in gadoAbate %}
+        <tr>
+            <td>{{gado.id}}</td>
+            <td scope="row">{{gado.leite}}</td>
+            <td>{{gado.racao}}</td>
+            <td>{{gado.peso}}</td>
+            <td>{{gado.situacao}}</td>
+            <td>{{gado.nascimento|date('d-m-Y')}}</td>
+            <td>
+                <a href="{{path('editar_gado',{id: gado.id})}}"
+                    class="btn btn-info btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </span>
+                    <span class="text">Editar</span>
+                </a>
 
-        </tbody>
-    </table>
+                <a id="btn-excluir" data-toggle="modal"
+                    href="{{path('editar_gado',{id: gado.id})}}"
+                    data-target="#myModal" data-id="{{ gado.id }}"
+                    class="btn btn-danger btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-trash"></i>
+                    </span>
+                    <span class="text">Excluir</span>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
 
+    </tbody>
+</table>
 
 <div class="modal" id="myModal">
     <div class="modal-dialog">
@@ -44,7 +68,8 @@
             <!-- header -->
             <div class="modal-header">
                 <h4 class="modal-title">Atenção!</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close"
+                    data-dismiss="modal">&times;</button>
             </div>
 
             <!-- body -->
@@ -54,9 +79,10 @@
 
             <!-- footer -->
             <div class="modal-footer">
-                
+
                 <a id="excluir" class="btn btn-danger">Sim!</a>
-                <a type="button" href="#" class="close data-dismiss="Não">Sair</a>
+                <a type="button" href="#"
+                    class="close data-dismiss="Não">Sair</a>
             </div>
 
         </div>

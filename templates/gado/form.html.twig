@@ -3,6 +3,15 @@
 {% block title %} {{ titulo }} {% endblock %}
 
 {% block body %}
-    {{ form(form) }}
-    <a href="{{path("listagem_gado")}}" class="btn btn-primary">Retornar a listagem</a>
+
+{% for message in app.flashes('commit') %}
+<div class='alert alert-success'>
+    {{ message }}
+</div>
+{% endfor %}
+
+{{ form(form) }}
+<a href="{{path("listagem_gado")}}" class="btn btn-primary">Retornar a
+    listagem</a>
+
 {% endblock %}

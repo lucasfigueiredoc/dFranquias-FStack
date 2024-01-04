@@ -30,18 +30,18 @@ class GadoRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('e');
         $consumoRacao = $queryBuilder->expr()->quot('e.racao', 7); ## Dividindo o valor produzido pelos dias da semana
         $pesoArrobaBR = $queryBuilder->expr()->prod('e.peso', 15); ## Separar o peso do animal pelo arroba BR, que é 15
-        
+
         #Query para produçao de leite menor que 40
         $queryBuilder
             ->andWhere('e.leite <= :producaoleite')
             ->setParameter('producaoleite', 40);
-        
+
         #Query para consumo maior que 50 quilos de raçao diario e produza menos que 70 litros semanal
         $queryBuilder
             ->andWhere('e.racao > :consumoracao AND e.leite > :producaoleite')
             ->setParameter('consumoracao', $consumoRacao)
             ->setParameter('producaoleite', 70);
-    
+
         #Query para listar apenas animais vivos
         $queryBuilder
             ->andWhere('e.situacao = :estado')
@@ -51,40 +51,42 @@ class GadoRepository extends ServiceEntityRepository
         $queryBuilder
             ->andWhere('e.situacao > :param2')
             ->setParameter('param2', $pesoArrobaBR);
-    
+
         #Query para animais com mais de 5 anos
         $dataAtual = new \DateTime();
         $dataNascimentoMinima = $dataAtual->modify('-5 years');
-    
+
         $queryBuilder
             ->andWhere('e.nascimento < :dataNascimentoMinima')
             ->setParameter('dataNascimentoMinima', $dataNascimentoMinima);
-    
+
         return $queryBuilder->getQuery()->getResult();
     }
-
-    public function findAnimaisUmQuinhentos(){
+    ###########################################################
+    public function findAnimaisUmQuinhentos()
+    {
 
         $queryBuilder = $this->createQueryBuilder('e');
 
         $queryBuilder
-        ->andWhere('e.racao > :param2')
-        ->setParameter('param2', 500);
+            ->andWhere('e.racao > :param2')
+            ->setParameter('param2', 500);
 
         $dataAtual = new \DateTime();
         $dataNascimentoMaxima = (new \DateTime())->modify('-1 year');
 
         $queryBuilder
-        ->andWhere('e.nascimento >= :dataNascimentoMaxima')
-        ->andWhere('e.nascimento <= :dataAtual')
-        ->setParameter('dataNascimentoMaxima', $dataNascimentoMaxima)
-        ->setParameter('dataAtual', $dataAtual);
+            ->andWhere('e.nascimento >= :dataNascimentoMaxima')
+            ->andWhere('e.nascimento <= :dataAtual')
+            ->setParameter('dataNascimentoMaxima', $dataNascimentoMaxima)
+            ->setParameter('dataAtual', $dataAtual);
 
         return $queryBuilder->getQuery()->getResult();
     }
 
     ## Função para selecionar animais abatidos
-    public function findAnimaisAbatidos(){
+    public function findAnimaisAbatidos()
+    {
         $queryBuilder = $this->createQueryBuilder('e');
 
         $queryBuilder
@@ -92,7 +94,6 @@ class GadoRepository extends ServiceEntityRepository
             ->setParameter('estado', 0);
 
         return $queryBuilder->getQuery()->getResult();
-
     }
 
     ## Função para lista
@@ -109,8 +110,8 @@ class GadoRepository extends ServiceEntityRepository
         $queryBuilder->setMaxResults(5);
 
         $queryBuilder
-            ->orderBy('e.leite',$ordem);
-        
+            ->orderBy('e.leite', $ordem);
+
         return $queryBuilder->getQuery()->getResult();
     }
 
@@ -118,13 +119,13 @@ class GadoRepository extends ServiceEntityRepository
     public function sumValues($tipo)
     {
         $queryBuilder = $this->createQueryBuilder('e');
-        
+
         $sum = $queryBuilder
-        ->select('SUM(e.'.$tipo.') as total')
-        ->andWhere('e.situacao = :situacao')
-        ->setParameter('situacao', 1)
-        ->getQuery()
-        ->getSingleScalarResult();
+            ->select('SUM(e.' . $tipo . ') as total')
+            ->andWhere('e.situacao = :situacao')
+            ->setParameter('situacao', 1)
+            ->getQuery()
+            ->getSingleScalarResult();
 
         return $sum;
     }
@@ -134,13 +135,12 @@ class GadoRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('e');
 
         $count = $queryBuilder
-        ->select('COUNT(e.id) as total')
-        ->andWhere('e.situacao = :situacao')
-        ->setParameter('situacao', $situacao)
-        ->getQuery()
-        ->getSingleScalarResult();
+            ->select('COUNT(e.id) as total')
+            ->andWhere('e.situacao = :situacao')
+            ->setParameter('situacao', $situacao)
+            ->getQuery()
+            ->getSingleScalarResult();
         return $count;
-
     }
 
 
@@ -149,28 +149,28 @@ class GadoRepository extends ServiceEntityRepository
 
 
 
-//    /**
-//     * @return Gado[] Returns an array of Gado objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Gado[] Returns an array of Gado objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('g.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Gado
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Gado
+    //    {
+    //        return $this->createQueryBuilder('g')
+    //            ->andWhere('g.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

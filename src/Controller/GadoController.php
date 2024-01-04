@@ -15,7 +15,7 @@ use App\Controller\Exception;
 class GadoController extends AbstractController
 {
 
-        ## Tela index
+        #### Tela index
 
     #[Route("/",name: "index")]
     public function index(Request $request, GadoRepository $gadoRepository,PaginatorInterface $pg ):Response{
@@ -33,7 +33,7 @@ class GadoController extends AbstractController
         return $this->render('/home/index.html.twig',$data);
     }
 
-    ## Route listagem, responsavel por uma listagem geral dos animais da fazenda
+    ###### Route listagem, responsavel por uma listagem geral dos animais da fazenda
     #[Route("/gado/listagem", name: "listagem_gado")]
     public function listagem(Request $request, GadoRepository $gadoRepository,PaginatorInterface $pg ): Response{
         $data['titulo'] = "Listagem";
@@ -50,7 +50,7 @@ class GadoController extends AbstractController
     }
 
 
-    ## Controler para ver animais com dados especificos para o abate
+    ##$#### Controler para ver animais com dados especificos para o abate
     #[Route("/gado/listagemAbate", name: "listagemAbate_gado")]
     public function listagemParaAbate(Request $request, GadoRepository $gadoRepository,PaginatorInterface $pg ): Response{
     
@@ -60,7 +60,7 @@ class GadoController extends AbstractController
         return $this->render('gado/listagemabate.html.twig',$data);
     }
 
-    # # Controler para renderizar apenas animais já abatidos
+    # ##### Controler para renderizar apenas animais já abatidos
     #[Route("/gado/listagemAbatidos", name: "listagemAbatidos_gado")]
     public function listagemAbatidos(Request $request, GadoRepository $gadoRepository,PaginatorInterface $pg ): Response{
     
@@ -78,7 +78,7 @@ class GadoController extends AbstractController
         return $this->render('gado/listagem.html.twig',$data);
     }
 
-     ## Controller adicionar gado
+     ##### Controller adicionar gado
     #[Route("/gado/adicionar", name: 'adicionar_gado')]
     public function adicionar(Request $request, EntityManagerInterface $em): Response{
         
@@ -92,12 +92,20 @@ class GadoController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($gado);
             $em->flush();
+
+            ##Flash
+            $this->addFlash(
+                'commit',
+                'Animal adicionado com sucesso!'
+            );
+
         }
+
         $data['form'] = $form;
         return $this->renderForm('gado/form.html.twig',$data);
     }
 
-    ## Controller editar gado
+    ##### Controller editar gado
    #[Route("/gado/editar/{id}", name:"editar_gado")]
     public function editar($id,Request $request, EntityManagerInterface $em, GadoRepository $gadoRepository): Response {
 
@@ -110,6 +118,13 @@ class GadoController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($gado);
             $em->flush();
+
+            ##Flash
+            $this->addFlash(
+                'commit',
+                'Animal editado com sucesso!'
+            );
+            
         
             return $this->redirectToRoute("listagem_gado");
         }
@@ -117,13 +132,18 @@ class GadoController extends AbstractController
         return $this->renderForm("gado/form.html.twig",$data);
         }
 
-        ## Controller excluir gado
+        ##### Controller excluir gado
         #[Route('gado/excluir/{id}', name: 'excluir_gado')]
         public function excluir(GadoRepository $gadoRepository, $id, EntityManagerInterface $em, Request $request): Response{
     
             $gado = $gadoRepository->find($id);
             $em->remove($gado);
             $em->flush();
+
+            $this->addFlash(
+                'commit',
+                'Animal excluido do sistema!'
+            );
     
             return $this->redirectToRoute('listagem_gado');
     
@@ -138,6 +158,12 @@ class GadoController extends AbstractController
             try { 
                 $em->persist($gado);
                 $em->flush();
+
+                $this->addFlash(
+                    'commit',
+                    'Animal registrado como abatido!'
+                );
+
             } catch (Exception $e) {
                 echo "Exceção capturada: " . $e->getMessage();
             }

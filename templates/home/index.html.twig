@@ -1,144 +1,137 @@
-{% extends "base.html.twig" %}
 
-{% block title %} {{ titulo }} {% endblock %}
+{% extends "base.html.twig" %}
 
 {% block body %}
 
-<a href="{{path("adicionar_gado")}}" class="btn btn-primary">Adicionar Gado</a>
-    <table class="table">
-        
-        <thead>
+<div class="container ">
+    <div class="row">
+        <div class="col col-lg-5">
 
-            <tr>
-                <td>ID</td>
-                <td scope="col">Leite</td>
-                <td scope="col">Ração</td>
-                <td scope="col">Peso</td>
-                <td scope="col">Situação</td>
-                <td scope="col">Nascimento</td>
-            </tr>
+            <div class="card" style="margin-top: 10px;">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col align-self-center">
+                            <h4 class="m-0">Ranking Produção: Leite</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
 
-        </thead>
+                            <tr>
+                                <td>ID</td>
+                                <td scope="col">Leite</td>
+                                <td scope="col">Ração</td>
+                                <td scope="col">Peso</td>
 
-        <tbody>
+                            </tr>
 
-            {% for gado in listagemASCDESC %}
+                        </thead>
 
-            <tr>
+                        <tbody>
+                            <div class="row">
+                                <div class="col-md-x">
+                                    {% for gado in listagemASCDESC %}
 
-                <td>{{gado.id}}</td>
-                <td scope="row">{{gado.leite}}</td>
-                <td>{{gado.racao}}</td>
-                <td>{{gado.peso}}</td>
+                                    <tr>
+                                        <th scope="row">{{gado.id}}</th>
+                                        <td>{{gado.leite}}</td>
+                                        <td>{{gado.racao}}</td>
+                                        <td>{{gado.peso}}</td>
+                                    </tr>
+                                </div>
+                            </div>
 
-                {%  if gado.situacao == 1 %}
-                <td>Vivo</td>
-                {% endif %}
-                {%  if gado.situacao == 0 %}
-                <td>Abate</td>
-                {% endif %}
-                {%  if gado.situacao == 2 %}
-                <td>Morto, outra razão.</td>
-                {% endif %}
-                <td>{{gado.nascimento|date('d-m-Y')}}</td>
-            </tr>
+                            {% endfor %}
 
-            {% endfor %} 
-
-        </tbody>
-    </table>
-
-    <h1>Consumo de leite total:</h1>  {{leiteTotal}}
-    <h1>Consumo de ração total:</h1>  {{racaoTotal}}
-
-    <p>animais vivos </p> {{animaisVivos}}
-    <p>animais abatidos </p> {{animaisAbatidos}}
-    <p>animais mortos por outras causas </p> {{animaisMorteOutras}}
-    <hr>
-    <hr>
-    <hr>
-
-
-
-    <table class="table">
-        
-        <thead>
-
-            <tr>
-                <td>ID</td>
-                <td scope="col">Leite</td>
-                <td scope="col">Ração</td>
-                <td scope="col">Peso</td>
-                <td scope="col">Situação</td>
-                <td scope="col">Nascimento</td>
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            {% for gado in animaisConsumo1500 %}
-
-            <tr>
-
-                <td>{{gado.id}}</td>
-                <td scope="row">{{gado.leite}}</td>
-                <td>{{gado.racao}}</td>
-                <td>{{gado.peso}}</td>
-
-                {%  if gado.situacao == 1 %}
-                <td>Vivo</td>
-                {% endif %}
-                {%  if gado.situacao == 0 %}
-                <td>Abate</td>
-                {% endif %}
-                {%  if gado.situacao == 2 %}
-                <td>Morto, outra razão.</td>
-                {% endif %}
-                <td>{{gado.nascimento|date('d-m-Y')}}</td>
-
-            </tr>
-
-            {% endfor %} 
-
-        </tbody>
-    </table>
-
-
-
-<div class="modal" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <!-- header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Atenção!</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- body -->
-            <div class="modal-body">
-                <p>Deseja realmente excluir o animal?</p>
-            </div>
-
-            <!-- footer -->
-            <div class="modal-footer">
-                
-                <a id="excluir" class="btn btn-danger">Sim, Excluir!</a>
-                <a type="button" href="#" class="close data-dismiss="Não">Sair</a>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
-    </div>
-</div>
+        <div class="card col col-lg-6" style="margin-top: 10px;">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col align-self-center">
+                        <h4 class="m-0">Consumo + 500kg, -1 idade</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
 
-{% endblock body %}
-{% block javascripts %}
-<script>
-    $(document).on('click', '#btn-excluir', function (e) {
-        a = document.getElementById('excluir');
-        const id =  $(this).data('id');
-        a.setAttribute("href", "/gado/excluir/" + id);
-    });
-</script>
-{% endblock %}
+                        <tr>
+                            <td>ID</td>
+                            <td scope="col">Leite</td>
+                            <td scope="col">Ração</td>
+                            <td scope="col">Peso</td>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for gado in animaisConsumo1500 %}
+
+                        <tr>
+
+                            <td>{{gado.id}}</td>
+                            <td scope="row">{{gado.leite}}</td>
+                            <td>{{gado.racao}}</td>
+                            <td>{{gado.peso}}</td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+                <div class="row">
+
+                    <div class="container">
+
+                            <div class="col">
+                                <table class="table table-striped">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Consumo de leite total</th>
+                                            <th>Consumo de ração total:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{leiteTotal}}</td>
+                                            <td>{{racaoTotal}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="row">
+                                <table class="table table-striped">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Animais Vivos</th>
+                                            <th>Animais Abatidos</th>
+                                            <th>Mortes Outras Causas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{animaisVivos}}</td>
+                                            <td>{{animaisAbatidos}}</td>
+                                            <td>{{animaisMorteOutras}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                        </div>
+                    </div>
+
+                    <hr>
+                </div>
+            </div>
+        </div>
+        {% endblock body %}
