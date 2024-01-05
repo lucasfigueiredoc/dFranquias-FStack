@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col col-lg-5">
 
-            <div class="card" style="margin-top: 10px;">
+            <div class="card" style="margin-top: 20px;">
                 <div class="card-header">
                     <div class="row">
                         <div class="col align-self-center">
@@ -92,7 +92,7 @@
 
                     <div class="container">
 
-                            <div class="col">
+                            <div class="card col col-lg-12">
                                 <table class="table table-striped">
                                     <thead class="thead-dark">
                                         <tr>
@@ -102,27 +102,27 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{{leiteTotal}}</td>
-                                            <td>{{racaoTotal}}</td>
+                                            <td>{{leiteTotal|number_format(2, ',', '.')}}</td>
+                                            <td>{{racaoTotal|number_format(2, ',', '.')}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
 
                             </div>
-                            <div class="row">
+                            <div class="card col col-lg-12">
                                 <table class="table table-striped">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>Animais Vivos</th>
                                             <th>Animais Abatidos</th>
-                                            <th>Mortes Outras Causas</th>
+                                            <th>Mortes</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>{{animaisVivos}}</td>
-                                            <td>{{animaisAbatidos}}</td>
-                                            <td>{{animaisMorteOutras}}</td>
+                                            <td>{{animaisVivos|number_format(0, ',', '.')}}</td>
+                                            <td>{{animaisAbatidos|number_format(0, ',', '.')}}</td>
+                                            <td>{{animaisMorteOutras|number_format(0, ',', '.')}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
