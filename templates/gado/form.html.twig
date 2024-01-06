@@ -18,31 +18,27 @@
           </div>
           
           <div class="form-group col-sm-12 {% if form.leite.vars.errors|length %} has-error {% endif %}">
-            {{ form_label(form.leite) }}
+
             {{ form_widget(form.leite) }}
             {{ form_errors(form.leite) }}
           </div>
           
           <div class="form-group col-sm-12 {% if form.racao.vars.errors|length %} has-error {% endif %}">
-            {{ form_label(form.racao) }}
             {{ form_widget(form.racao) }}
             {{ form_errors(form.racao) }}
           </div>
 
           <div class="form-group col-sm-12 {% if form.peso.vars.errors|length %} has-error {% endif %}">
-            {{ form_label(form.peso) }}
             {{ form_widget(form.peso) }}
             {{ form_errors(form.peso) }}
           </div>
 
           <div class="form-group col-sm-12 {% if form.nascimento.vars.errors|length %} has-error {% endif %}">
-            {{ form_label(form.nascimento) }}
             {{ form_widget(form.nascimento) }}
             {{ form_errors(form.nascimento) }}
           </div>
 
           <div class="form-group col-sm-12 {% if form.situacao.vars.errors|length %} has-error {% endif %}">
-            {{ form_label(form.situacao) }}
             {{ form_widget(form.situacao) }}
             {{ form_errors(form.situacao) }}
           </div>
@@ -51,11 +47,15 @@
             <button type="submit" class="btn {{ button_css|default('btn-info btn-fw ') }} waves-effect m-t-xs m-r-xs rounded">
               {{ button_label|default('Salvar') }}
             </button>
+            {{ form_widget(form._token) }}
+            <div class="container">
+              <a href="{{ path('listagem_gado') }}" class="btn btn-primary">Retornar à listagem</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  {{ form_widget(form._token) }}
-  <a href="{{ path('listagem_gado') }}" class="btn btn-primary">Retornar à listagem</a>
+
+
 {% endblock %}

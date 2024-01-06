@@ -74,6 +74,7 @@ class GadoRepository extends ServiceEntityRepository
 
         $dataAtual = new \DateTime();
         $dataNascimentoMaxima = (new \DateTime())->modify('-1 year');
+        $queryBuilder->setMaxResults(5);
 
         $queryBuilder
             ->andWhere('e.nascimento >= :dataNascimentoMaxima')

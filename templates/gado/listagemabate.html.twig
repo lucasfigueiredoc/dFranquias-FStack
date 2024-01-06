@@ -81,16 +81,12 @@
             <div class="modal-footer">
 
                 <a id="excluir" class="btn btn-danger">Sim!</a>
-                <a type="button" href="#"
-                    class="close data-dismiss="Não">Sair</a>
             </div>
 
         </div>
     </div>
 </div>
 
-{% endblock body %}
-{% block javascripts %}
 <script>
     $(document).on('click', '#btn-excluir', function (e) {
         a = document.getElementById('excluir');
@@ -98,4 +94,8 @@
         a.setAttribute("href", "/gado/abater/" + id);
     });
 </script>
-{% endblock %}
+
+{% endblock body %}
+
+
+
