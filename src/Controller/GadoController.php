@@ -116,10 +116,12 @@ class GadoController extends AbstractController
     {
 
         $data['titulo'] = "Editar Animal";
-
+        $data['idVariavel'] = $id;
         $gado = $gadoRepository->find($id);
         $form = $this->createForm(GadoType::class, $gado);
         $form->handleRequest($request);
+
+        $referer = $request->headers->get('referer');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($gado);
@@ -132,10 +134,10 @@ class GadoController extends AbstractController
             );
 
 
-            return $this->redirectToRoute("listagem_gado");
+            return $this->redirect($referer);
         }
         $data['form'] = $form;
-        return $this->renderForm("gado/form.html.twig", $data);
+        return $this->renderForm("gado/formEditar.html.twig", $data);
     }
 
     ##### Controller excluir gado

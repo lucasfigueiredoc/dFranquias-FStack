@@ -17,6 +17,7 @@ class GadoType extends AbstractType
             ->add('leite', TextType::class,[ 'attr' => array('placeholder' => 'Produção Leite | Litros')])
             ->add('racao', TextType::class,[ 'attr' => array('placeholder' => 'Consumo Ração | Kg')])
             ->add('peso', TextType::class,[ 'attr' => array('placeholder' => 'Peso do Animal | Kg')])
+            ## combobox para escolher a situacão ao qual o animal se encontra
             ->add('situacao', ChoiceType::class, [
                 'placeholder' => 'Situação',
                 'choices' => [

@@ -12,7 +12,7 @@
 
 
 
-<a href="{{path('adicionar_gado')}}" class="btn btn-secondary btn-icon-split">
+<a href="{{path('adicionar_gado')}}" class="btn btn-secondary btn-icon-split btn-sm">
     <span class="icon text-white-50">
         <i class="fas fa-arrow-right"></i>
     </span>
@@ -67,8 +67,8 @@
 
             <td>
                 <a href="{{path('editar_gado',{id: gado.id})}}"
-                    class="btn btn-info btn-icon-split">
-                    <span class="icon text-white-50">
+                class="btn btn-outline-info">
+                    <span class="icon text-black-50">
                         <i class="fas fa-exclamation-triangle"></i>
                     </span>
                     <span class="text">Editar</span>
@@ -77,8 +77,8 @@
                 <a id="btn-excluir" data-toggle="modal"
                     href="{{path('editar_gado',{id: gado.id})}}"
                     data-target="#myModal" data-id="{{ gado.id }}"
-                    class="btn btn-danger btn-icon-split">
-                    <span class="icon text-white-50">
+                    class="btn btn-outline-danger">
+                    <span class="icon text-black-50">
                         <i class="fas fa-trash"></i>
                     </span>
                     <span class="text">Excluir</span>
@@ -115,7 +115,7 @@
             <!-- footer -->
             <div class="modal-footer">
 
-                <a id="excluir" class="btn btn-danger">Sim, Excluir!</a>
+                <a id="excluir" class="btn btn-danger btn-sm">Sim, Excluir!</a>
             </div>
 
         </div>

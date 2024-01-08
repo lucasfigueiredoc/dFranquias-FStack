@@ -1,0 +1,117 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ titulo }} {% endblock %}
+
+{% block body %}
+{% for message in app.flashes('commit') %}
+<div class='alert alert-success'>
+  {{ message }}
+</div>
+{% endfor %}
+{{ form_start(form, { attr: { class: form_css|default('') } }) }}
+<div class="container">
+  <div class="container d-flex justify-content-center align-items-center"
+    style="min-height: 50vh;">
+    <div class="row">
+      <div class="p-5 border border-5 rounded">
+        <div class="text-center">
+          <h1 class="h4 text-gray-900 mb-4">Editar Gado</h1>
+        </div>
+
+        <div
+          class="form-group col-sm-12 {% if form.leite.vars.errors|length %} has-error {% endif %}">
+
+          {{ form_widget(form.leite) }}
+          {{ form_errors(form.leite) }}
+        </div>
+
+        <div
+          class="form-group col-sm-12 {% if form.racao.vars.errors|length %} has-error {% endif %}">
+          {{ form_widget(form.racao) }}
+          {{ form_errors(form.racao) }}
+        </div>
+
+        <div
+          class="form-group col-sm-12 {% if form.peso.vars.errors|length %} has-error {% endif %}">
+          {{ form_widget(form.peso) }}
+          {{ form_errors(form.peso) }}
+        </div>
+
+        <div
+          class="form-group col-sm-12 {% if form.nascimento.vars.errors|length %} has-error {% endif %}">
+          {{ form_widget(form.nascimento) }}
+          {{ form_errors(form.nascimento) }}
+        </div>
+
+        <div
+          class="form-group col-sm-12 {% if form.situacao.vars.errors|length %} has-error {% endif %}">
+          {{ form_widget(form.situacao) }}
+          {{ form_errors(form.situacao) }}
+        </div>
+
+        <div
+          class="form-group col-sm-12 {% if form.situacao.vars.errors|length %} has-error {% endif %}">
+          <button type="submit"
+            class="btn {{ button_css|default('btn-info btn-fw ') }} waves-effect m-t-xs m-r-xs rounded">
+            {{ button_label|default('Salvar') }}
+          </button>
+          {{ form_widget(form._token) }}
+          <div class="container">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="{{ path('listagem_gado') }}" class="btn btn-primary btn-sm">Retornar
+    à
+    listagem</a>
+
+  <a id="btn-excluir" data-toggle="modal"
+    href="{{ path('editar_gado', {id: idVariavel}) }}"
+    data-target="#myModal" data-id={{idVariavel}}
+    class="btn btn-danger btn-icon-split btn-sm">
+    <span class="icon text-white-50">
+      <i class="fas fa-trash"></i>
+    </span>
+    <span class="text">Excluir</span>
+  </a>
+
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Atenção!</h4>
+          <button type="button" class="close"
+            data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- body -->
+        <div class="modal-body">
+          <p>Deseja realmente excluir o animal?</p>
+        </div>
+
+        <!-- footer -->
+        <div class="modal-footer">
+
+          <a id="excluir" class="btn btn-danger btn-sm">Sim, Excluir!</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+  $(document).on('click', '#btn-excluir', function (e) {
+      a = document.getElementById('excluir');
+      const id =  $(this).data('id');
+      a.setAttribute("href", "/gado/excluir/" + id);
+  });
+</script>
+
+</div>
+
+{% endblock %}

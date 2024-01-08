@@ -3,59 +3,70 @@
 {% block title %} {{ titulo }} {% endblock %}
 
 {% block body %}
-  {% for message in app.flashes('commit') %}
-    <div class='alert alert-success'>
-      {{ message }}
-    </div>
-  {% endfor %}
-  {{ form_start(form, { attr: { class: form_css|default('') } }) }}
-  <div class="container">
-    <div class="container d-flex justify-content-center align-items-center" style="min-height: 50vh;">
-      <div class="row">
-        <div class="p-5 border border-5 rounded">
-          <div class="text-center">
-            <h1 class="h4 text-gray-900 mb-4">Registrar Gado</h1>
-          </div>
-          
-          <div class="form-group col-sm-12 {% if form.leite.vars.errors|length %} has-error {% endif %}">
+{% for message in app.flashes('commit') %}
+<div class='alert alert-success'>
+  {{ message }}
+</div>
+{% endfor %}
+{{ form_start(form, { attr: { class: form_css|default('') } }) }}
+<div class="container">
+  <div class="container d-flex justify-content-center align-items-center"
+    style="min-height: 50vh;">
+    <div class="row">
+      <div class="p-5 border border-5 rounded">
+        <div class="text-center">
+          <h1 class="h4 text-gray-900 mb-4">Registrar Gado</h1>
+        </div>
 
-            {{ form_widget(form.leite) }}
-            {{ form_errors(form.leite) }}
-          </div>
-          
-          <div class="form-group col-sm-12 {% if form.racao.vars.errors|length %} has-error {% endif %}">
-            {{ form_widget(form.racao) }}
-            {{ form_errors(form.racao) }}
-          </div>
+        <div
+          class="form-group col-sm-12 {% if form.leite.vars.errors|length %} has-error {% endif %}">
 
-          <div class="form-group col-sm-12 {% if form.peso.vars.errors|length %} has-error {% endif %}">
-            {{ form_widget(form.peso) }}
-            {{ form_errors(form.peso) }}
-          </div>
+          {{ form_widget(form.leite) }}
+          {{ form_errors(form.leite) }}
+        </div>
 
-          <div class="form-group col-sm-12 {% if form.nascimento.vars.errors|length %} has-error {% endif %}">
-            {{ form_widget(form.nascimento) }}
-            {{ form_errors(form.nascimento) }}
-          </div>
+        <div
+          class="form-group col-sm-12 {% if form.racao.vars.errors|length %} has-error {% endif %}">
+          {{ form_widget(form.racao) }}
+          {{ form_errors(form.racao) }}
+        </div>
 
-          <div class="form-group col-sm-12 {% if form.situacao.vars.errors|length %} has-error {% endif %}">
-            {{ form_widget(form.situacao) }}
-            {{ form_errors(form.situacao) }}
-          </div>
+        <div
+          class="form-group col-sm-12 {% if form.peso.vars.errors|length %} has-error {% endif %}">
+          {{ form_widget(form.peso) }}
+          {{ form_errors(form.peso) }}
+        </div>
 
-          <div class="form-group col-sm-12 {% if form.situacao.vars.errors|length %} has-error {% endif %}">
-            <button type="submit" class="btn {{ button_css|default('btn-info btn-fw ') }} waves-effect m-t-xs m-r-xs rounded">
-              {{ button_label|default('Salvar') }}
-            </button>
-            {{ form_widget(form._token) }}
-            <div class="container">
-              <a href="{{ path('listagem_gado') }}" class="btn btn-primary">Retornar à listagem</a>
-            </div>
-          </div>
+        <div
+          class="form-group col-sm-12 {% if form.nascimento.vars.errors|length %} has-error {% endif %}">
+          {{ form_widget(form.nascimento) }}
+          {{ form_errors(form.nascimento) }}
+        </div>
+
+        <div
+          class="form-group col-sm-12 {% if form.situacao.vars.errors|length %} has-error {% endif %}">
+          {{ form_widget(form.situacao) }}
+          {{ form_errors(form.situacao) }}
+        </div>
+
+        <div
+          class="form-group col-sm-12 {% if form.situacao.vars.errors|length %} has-error {% endif %}">
+          <button type="submit"
+            class="btn {{ button_css|default('btn-info btn-fw ') }} waves-effect m-t-xs m-r-xs rounded">
+            {{ button_label|default('Salvar') }}
+          </button>
+          {{ form_widget(form._token) }}
+
         </div>
       </div>
     </div>
   </div>
 
+  <div class="container">
+    <a href="{{ path('listagem_gado') }}"
+      class="btn btn-primary btn-sm">Retornar à listagem</a>
+  </div>
+
+</div>
 
 {% endblock %}

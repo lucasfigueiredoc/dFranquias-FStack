@@ -63,11 +63,13 @@ class GadoRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
     ###########################################################
+    #Query responsavel por separar animais com consummo maior que 500 e que tenha menos de um ano de idade
     public function findAnimaisUmQuinhentos()
     {
 
         $queryBuilder = $this->createQueryBuilder('e');
 
+        
         $queryBuilder
             ->andWhere('e.racao > :param2')
             ->setParameter('param2', 500);
@@ -97,7 +99,7 @@ class GadoRepository extends ServiceEntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
-    ## Função para lista
+    ## Função para listar animais em ordem decrescente
 
     public function listAnimais($ordenacao)
     {
@@ -130,7 +132,8 @@ class GadoRepository extends ServiceEntityRepository
 
         return $sum;
     }
-
+    
+    #Função para contar os animais de acordo com seu estado sendo eles: vivo, abatido ou
     public function countAnimais($situacao)
     {
         $queryBuilder = $this->createQueryBuilder('e');

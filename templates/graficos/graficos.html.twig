@@ -3,8 +3,6 @@
 
 {% block body %}
 
-<!-- grafico pizza-->
-<div id="piechart" style="width: 900px; height: 500px;"></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load('current', {'packages':['corechart']});
@@ -13,10 +11,10 @@
   function drawChart() {
 
     var data = google.visualization.arrayToDataTable([
-      ['Valor', 'Quantidade'],
-      ['Animais vivos',     {{animaisVivos|number_format(0, ',', '.')}}],
-      ['Abatidos',      {{animaisAbatidos|number_format(0, ',', '.')}}],
-      ['Mortes',  {{animaisMorteOutras|number_format(0, ',', '.')}}]
+      ['Valor', 'Quantidade',  { role: 'style' }],
+      ['Animais vivos',     {{animaisVivos|number_format(0, ',', '.')}}, '#aaffaa'],
+      ['Abatidos',      {{animaisAbatidos|number_format(0, ',', '.')}}, '#3366cc'],
+      ['Mortes',  {{animaisMorteOutras|number_format(0, ',', '.')}}, 'ff6666']
     ]);
 
     var options = {
@@ -28,69 +26,51 @@
     chart.draw(data, options);
   }
 </script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-  google.charts.load('current', {'packages':['bar']});
-  google.charts.setOnLoadCallback(drawStuff);
 
-  function drawStuff() {
-    var data = new google.visualization.arrayToDataTable([
-      ['Move', 'Percentage'],
-      ['Animais vivos',     {{animaisVivos}}],
-      ['Abatidos',      {{animaisAbatidos}}],
-      ['Mortes',  {{animaisMorteOutras}}]
-    ]);
-
-    var options = {
-      width: 800,
-      legend: { position: 'none' },
-      chart: {
-        title: 'Chess opening moves',
-        subtitle: 'popularity by percentage' },
-      axes: {
-        x: {
-          0: { side: 'top', label: 'White to move'} // Top x-axis.
-        }
-      },
-      bar: { groupWidth: "90%" }
-    };
-
-    var chart = new google.charts.Bar(document.getElementById('top_x_div'));
-    // Convert the Classic options to Material options.
-    chart.draw(data, google.charts.Bar.convertOptions(options));
-  };
-</script>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-  google.charts.load('current', {'packages':['bar']});
-  google.charts.setOnLoadCallback(drawChart);
 
-  function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-      ['Year', 'Sales', 'Expenses'],
-      ['2014', 1000, 400, 200],
-      ['2015', 1170, 460, 250],
-      ['2016', 660, 1120, 300],
-      ['2017', 1030, 540, 350]
-    ]);
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
 
-    var options = {
-      chart: {
-        title: 'Company Performance',
-        subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-      },
-      bars: 'horizontal' // Required for Material Bar Charts.
-    };
+    function drawChart() {
 
-    var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+        var data = google.visualization.arrayToDataTable([
+            ['Estado', 'Quantidade',  { role: 'style' }],
+            ['Vivos', {{animaisVivos}}, '#aaffaa'],
+            ['Abatidos', {{animaisAbatidos}}, '#3366cc'],
+            ['Mortes Outras', {{animaisMorteOutras}}, 'ff6666'],
 
-    chart.draw(data, google.charts.Bar.convertOptions(options));
-  }
+        ]);
+
+        var options = {
+            title: 'Exemplo de Gráfico de Barras',
+            legend: { position: 'none' },
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+
+    }
 </script>
 
-<div id="piechart" style="width: 900px; height: 500px;"></div>
+<div class="container">
+  <div class="row">
+      <div class="col-md-6">
+          <!-- Grafico de pizza -->
+          <div class="p-2">
+              <div id="piechart" style="width: 100%; height: 500px;"></div>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <!-- Grafico em barras -->
+          <div class="p-2">
+              <div id="chart_div" style="width: 100%; height: 500px;"></div>
+          </div>
+      </div>
+  </div>
+</div>
 
-<div id="top_x_div" style="width: 800px; height: 600px;"></div>
-<div id="barchart_material" style="width: 900px; height: 500px;"></div>
+
+
 {% endblock body %}
