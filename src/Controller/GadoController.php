@@ -11,7 +11,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Controller\Exception;
+
+/*
+* @Route("/gado")
+* @UniqueEntity(fields="codigo", entityClass=Gado::class, message="Este número já está em uso.")
+*/
+
 
 class GadoController extends AbstractController
 {
@@ -94,16 +101,24 @@ class GadoController extends AbstractController
 
         $form = $this->createForm(GadoType::class, $gado);
         $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            $codigo = $gado->getCodigo();
+            $validacao  = $em->getRepository(Gado::class)->findOneBy([
+                'codigo' =>$codigo,
+            ]);
+
+            if($validacao){
+                $this->addFlash('commit', 'Codigo já existente no banco.');
+            }else{
+
             $em->persist($gado);
             $em->flush();
 
-            ##Flash
-            $this->addFlash(
-                'commit',
-                'Animal adicionado com sucesso!'
-            );
+            $this->addFlash('commit', 'Animal adicionado ao sistema!');
+            return $this->redirectToRoute('adicionar_gado');
+            }
         }
 
         $data['form'] = $form;
@@ -118,37 +133,57 @@ class GadoController extends AbstractController
         $data['titulo'] = "Editar Animal";
         $data['idVariavel'] = $id;
         $gado = $gadoRepository->find($id);
+        $codigo = $gado->getCodigo();
         $form = $this->createForm(GadoType::class, $gado);
         $form->handleRequest($request);
 
-        $referer = $request->headers->get('referer');
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($gado);
-            $em->flush();
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $codigoForm = $gado->getCodigo();
 
-            ##Flash
-            $this->addFlash(
-                'commit',
-                'Animal editado com sucesso!'
-            );
+            if($codigo !== $codigoForm) 
+            {
+                $validacao  = $em->getRepository(Gado::class)->findOneBy([
+                    'codigo' =>$codigo,
+                    'situacao' => 1
+                ]);
+
+                if($validacao){
+                    $this->addFlash('commit', 'Codigo já existente no banco.');
+                }else{
+
+                    $em->persist($gado);
+                    $em->flush();
+
+                    $this->addFlash('commit', 'Animal adicionado ao sistema!');
+                    return $this->redirectToRoute('adicionar_gado');
+                }
+            }else{
+
+                $em->persist($gado);
+                $em->flush();
+
+                $this->addFlash('commit', 'Animal editado ao sistema!');
+                return $this->redirectToRoute('adicionar_gado');
+            }
+            
 
 
-            return $this->redirect($referer);
         }
         $data['form'] = $form;
         return $this->renderForm("gado/formEditar.html.twig", $data);
     }
-
     ##### Controller excluir gado
     #[Route('gado/excluir/{id}', name: 'excluir_gado')]
     public function excluir(GadoRepository $gadoRepository, $id, EntityManagerInterface $em, Request $request): Response
     {
 
         $gado = $gadoRepository->find($id);
+        $gado->setCodigo(NULL); #### Quando um animal é excluido para liberar o codigo a outro animal, seu codigo é setado como NULO
         $em->remove($gado);
         $em->flush();
-
+        
         $this->addFlash(
             'commit',
             'Animal excluido do sistema!'
@@ -164,6 +199,7 @@ class GadoController extends AbstractController
 
         $gado = $gadoRepository->find($id);
         $gado->setSituacao(0);
+        $gado->setCodigo(NULL); #### Quando um animal é abatido, para liberar o codigo a outro animal, seu codigo é setado como NULO
         try {
             $em->persist($gado);
             $em->flush();
@@ -176,7 +212,7 @@ class GadoController extends AbstractController
             echo "Exceção capturada: " . $e->getMessage();
         }
 
-        return $this->redirectToRoute('listagem_gado');
+        return $this->redirectToRoute('listagemAbate_gado');
     }
 
     #[Route("/graficos", name: "graficos")]

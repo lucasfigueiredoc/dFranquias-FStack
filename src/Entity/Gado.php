@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Repository\GadoRepository;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GadoRepository::class)]
 class Gado
@@ -42,6 +42,13 @@ class Gado
     message:"Datas futuras são inapropriadas para inserção.")
     ]
     private ?\DateTimeInterface $nascimento = null;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, unique=true)
+     * @Assert\Type(type="numeric", message="O valor deve ser numérico.")
+     */
+    #[ORM\Column(nullable: true)]
+    private ?int $codigo = null;
 
     public function getId(): ?int
     {
@@ -104,6 +111,18 @@ class Gado
     public function setNascimento(\DateTimeInterface $nascimento): static
     {
         $this->nascimento = $nascimento;
+
+        return $this;
+    }
+
+    public function getCodigo(): ?int
+    {
+        return $this->codigo;
+    }
+
+    public function setCodigo(?int $codigo): static
+    {
+        $this->codigo = $codigo;
 
         return $this;
     }

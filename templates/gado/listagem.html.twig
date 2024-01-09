@@ -10,15 +10,13 @@
 </div>
 {% endfor %}
 
-
-
-<a href="{{path('adicionar_gado')}}" class="btn btn-secondary btn-icon-split btn-sm">
+<a href="{{path('adicionar_gado')}}"
+    class="btn btn-secondary btn-icon-split btn-sm">
     <span class="icon text-white-50">
         <i class="fas fa-arrow-right"></i>
     </span>
     <span class="text  pull-right">Adicionar Gado</span>
 </a>
-
 
 <div class="card-header">
     <div class="row">
@@ -32,7 +30,7 @@
     <thead class="thead-dark">
 
         <tr>
-            <td>ID</td>
+            <td>Código</td>
             <td scope="col">Leite</td>
             <td scope="col">Ração</td>
             <td scope="col">Peso</td>
@@ -49,7 +47,13 @@
 
         <tr>
 
-            <td>{{gado.id}}</td>
+            <td>
+                {% if gado.codigo == NULL %}
+                S/Cod
+                {% else %}
+                {{gado.codigo}}
+                {% endif %}
+            </td>
             <td scope="row">{{gado.leite}}</td>
             <td>{{gado.racao}}</td>
             <td>{{gado.peso}}</td>
@@ -63,12 +67,12 @@
             {% if gado.situacao == 2 %}
             <td>Morto, outra razão.</td>
             {% endif %}
-            
+
             <td>{{gado.nascimento|date('d-m-Y')}}</td>
 
             <td>
                 <a href="{{path('editar_gado',{id: gado.id})}}"
-                class="btn btn-outline-info">
+                    class="btn btn-outline-info">
                     <span class="icon text-black-50">
                         <i class="fas fa-exclamation-triangle"></i>
                     </span>

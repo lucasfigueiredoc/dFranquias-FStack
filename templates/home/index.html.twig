@@ -1,101 +1,123 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="m-0">Ranking Produção: Leite</h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Leite</th>
-                                    <th>Ração</th>
-                                    <th>Peso</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for gado in listagemASCDESC %}
-                                    <tr>
-                                        <td><a href="{{ path('editar_gado', {id: gado.id}) }}">{{ gado.id }}</a></td>
-                                        <td>{{ gado.leite }}</td>
-                                        <td>{{ gado.racao }}</td>
-                                        <td>{{ gado.peso }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="m-0">Ranking Produção: Leite</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Código</th>
+                                <th>Leite</th>
+                                <th>Ração</th>
+                                <th>Peso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for gado in listagemASCDESC %}
+                            <tr>
+                                <td><a
+                                        href="{{ path('editar_gado', {id: gado.id}) }}">
+                                        {% if gado.codigo == NULL %}
+                                        S/Cod
+                                        {% else %}
+                                        {{gado.codigo}}
+                                        {% endif %}
+                                    </a></td>
+
+                                <td>{{ gado.leite }}</td>
+                                <td>{{ gado.racao }}</td>
+                                <td>{{ gado.peso }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Produção total de leite</th>
+                                <th>Consumo total de ração</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ leiteTotal|number_format(2, ',', '.') }}
+                                    Litros</td>
+                                <td>{{ racaoTotal|number_format(2, ',', '.') }}
+                                    Kilos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="m-0">Consumo + 500kg, -1 idade</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Código</th>
+                                <th>Leite</th>
+                                <th>Ração</th>
+                                <th>Peso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for gado in animaisConsumo1500 %}
+                            <tr>
+
+                                <td><a
+                                        href="{{ path('editar_gado', {id: gado.id}) }}">
+                                        {% if gado.codigo == NULL %}
+                                            S/Cod
+                                        {% else %}
+                                            {{gado.codigo}}
+                                        {% endif %}
+                                    </a></td>
+
+                                <td>{{ gado.leite }}</td>
+                                <td>{{ gado.racao }}</td>
+                                <td>{{ gado.peso }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     <div class="card-footer">
                         <table class="table table-striped">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>Produção total de leite</th>
-                                    <th>Consumo total de ração</th>
+                                    <th>Animais Vivos</th>
+                                    <th>Animais Abatidos</th>
+                                    <th>Mortes</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ leiteTotal|number_format(2, ',', '.') }} Litros</td>
-                                    <td>{{ racaoTotal|number_format(2, ',', '.') }} Kilos</td>
+                                    <td>{{ animaisVivos|number_format(0, ',',
+                                        '.') }}</td>
+                                    <td>{{ animaisAbatidos|number_format(0, ',',
+                                        '.') }}</td>
+                                    <td>{{ animaisMorteOutras|number_format(0,
+                                        ',', '.') }}</td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="m-0">Consumo + 500kg, -1 idade</h4>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Leite</th>
-                                    <th>Ração</th>
-                                    <th>Peso</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for gado in animaisConsumo1500 %}
-                                    <tr>
-                                        <td><a href="{{ path('editar_gado', {id: gado.id}) }}">{{ gado.id }}</a></td>
-                                        <td>{{ gado.leite }}</td>
-                                        <td>{{ gado.racao }}</td>
-                                        <td>{{ gado.peso }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div class="card-footer">
-                            <table class="table table-striped">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Animais Vivos</th>
-                                        <th>Animais Abatidos</th>
-                                        <th>Mortes</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{ animaisVivos|number_format(0, ',', '.') }}</td>
-                                        <td>{{ animaisAbatidos|number_format(0, ',', '.') }}</td>
-                                        <td>{{ animaisMorteOutras|number_format(0, ',', '.') }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock body %}

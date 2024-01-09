@@ -18,6 +18,15 @@
           <h1 class="h4 text-gray-900 mb-4">Editar Gado</h1>
         </div>
 
+
+        <div
+          class="form-group col-sm-12 {% if form.codigo.vars.errors|length %} has-error {% endif %}">
+
+          {{ form_widget(form.codigo) }}
+          {{ form_errors(form.codigo) }}
+        </div>
+
+
         <div
           class="form-group col-sm-12 {% if form.leite.vars.errors|length %} has-error {% endif %}">
 

@@ -10,17 +10,17 @@
 </div>
 {% endfor %}
 
-            <div class="card-header">
-                <div class="row">
-                    <div class="col align-self-center">
-                        <h4 class="m-0">{{titulo}}</h4>
-                    </div>
-                </div>
-            </div>
-            <table class="table table-striped">
-                <thead class="thead-dark">
+<div class="card-header">
+    <div class="row">
+        <div class="col align-self-center">
+            <h4 class="m-0">{{titulo}}</h4>
+        </div>
+    </div>
+</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
         <tr>
-            <td>ID</td>
+            <td>Código</td>
             <td scope="col">Leite</td>
             <td scope="col">Ração</td>
             <td scope="col">Peso</td>
@@ -32,7 +32,13 @@
     <tbody>
         {% for gado in gadoAbate %}
         <tr>
-            <td>{{gado.id}}</td>
+            <td>
+                {% if gado.codigo == NULL %}
+                S/Cod
+                {% else %}
+                {{gado.codigo}}
+                {% endif %}
+            </td>
             <td scope="row">{{gado.leite}}</td>
             <td>{{gado.racao}}</td>
             <td>{{gado.peso}}</td>
@@ -48,7 +54,7 @@
             <td>{{gado.nascimento|date('d-m-Y')}}</td>
             <td>
                 <a href="{{path('editar_gado',{id: gado.id})}}"
-                class="btn btn-outline-info">
+                    class="btn btn-outline-info">
                     <span class="icon text-black-50">
                         <i class="fas fa-exclamation-triangle"></i>
                     </span>
@@ -106,6 +112,3 @@
 </script>
 
 {% endblock body %}
-
-
-
