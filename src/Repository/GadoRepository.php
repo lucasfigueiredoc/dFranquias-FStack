@@ -32,24 +32,21 @@ class GadoRepository extends ServiceEntityRepository
         $pesoArrobaBR = $queryBuilder->expr()->prod('e.peso', 15); ## Separar o peso do animal pelo arroba BR, que é 15
 
         #Query para produçao de leite menor que 40
+        
         $queryBuilder
-            ->andWhere('e.leite <= :producaoleite')
+            ->orWhere('e.leite <= :producaoleite')
             ->setParameter('producaoleite', 40);
 
         #Query para consumo maior que 50 quilos de raçao diario e produza menos que 70 litros semanal
         $queryBuilder
-            ->andWhere('e.racao > :consumoracao AND e.leite > :producaoleite')
+            ->orWhere('e.racao > :consumoracao AND e.leite > :producaoleite')
             ->setParameter('consumoracao', $consumoRacao)
             ->setParameter('producaoleite', 70);
 
-        #Query para listar apenas animais vivos
-        $queryBuilder
-            ->andWhere('e.situacao = :estado')
-            ->setParameter('estado', 1);
 
         #Query para separar animais com peso maior que 18 arrobas brasileiro.
         $queryBuilder
-            ->andWhere('e.situacao > :param2')
+            ->orWhere('e.situacao > :param2')
             ->setParameter('param2', $pesoArrobaBR);
 
         #Query para animais com mais de 5 anos
@@ -57,8 +54,15 @@ class GadoRepository extends ServiceEntityRepository
         $dataNascimentoMinima = $dataAtual->modify('-5 years');
 
         $queryBuilder
-            ->andWhere('e.nascimento < :dataNascimentoMinima')
+            ->orWhere('e.nascimento < :dataNascimentoMinima')
             ->setParameter('dataNascimentoMinima', $dataNascimentoMinima);
+
+        #Query para listar apenas animais vivos
+
+        $queryBuilder
+            ->andWhere('e.situacao = :estado')
+            ->setParameter('estado', 1);
+            
 
         return $queryBuilder->getQuery()->getResult();
     }

@@ -39,7 +39,7 @@ class GadoController extends AbstractController
     #[Route("/gado/listagem", name: "listagem_gado")]
     public function listagem(Request $request, GadoRepository $gadoRepository, PaginatorInterface $pg): Response
     {
-        $data['titulo'] = "Listagem";
+        $data['titulo'] = "Listagem dos animais.";
 
         $query = $gadoRepository->findAll();
 
@@ -58,7 +58,7 @@ class GadoController extends AbstractController
     public function listagemParaAbate(Request $request, GadoRepository $gadoRepository, PaginatorInterface $pg): Response
     {
 
-        $data['titulo'] = "Listagem animais para o abate";
+        $data['titulo'] = "Listagem animais para o abate.";
         $data['gadoAbate'] = $gadoRepository->findAnimaisParaAbate();
 
         return $this->render('gado/listagemabate.html.twig', $data);
@@ -70,7 +70,7 @@ class GadoController extends AbstractController
     {
 
 
-        $data['titulo'] = "Listagem animais Abatidos";
+        $data['titulo'] = "Listagem animais abatidos";
         $data['animaisAbatidos']  = $gadoRepository->countAnimais(0);
         $query = $gadoRepository->findAnimaisAbatidos();
         $data['titulo'] = "Listagem";

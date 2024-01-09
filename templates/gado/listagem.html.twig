@@ -16,14 +16,14 @@
     <span class="icon text-white-50">
         <i class="fas fa-arrow-right"></i>
     </span>
-    <span class="text">Adicionar Gado</span>
+    <span class="text  pull-right">Adicionar Gado</span>
 </a>
 
 
 <div class="card-header">
     <div class="row">
         <div class="col align-self-center">
-            <h4 class="m-0">Listagem total</h4>
+            <h4 class="m-0">{{titulo}}</h4>
         </div>
     </div>
 </div>
@@ -63,6 +63,7 @@
             {% if gado.situacao == 2 %}
             <td>Morto, outra razão.</td>
             {% endif %}
+            
             <td>{{gado.nascimento|date('d-m-Y')}}</td>
 
             <td>

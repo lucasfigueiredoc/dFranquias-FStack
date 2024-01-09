@@ -13,10 +13,12 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col align-self-center">
-                        <h4 class="m-0">Animais para o Abate</h4>
+                        <h4 class="m-0">{{titulo}}</h4>
                     </div>
                 </div>
             </div>
+            <table class="table table-striped">
+                <thead class="thead-dark">
         <tr>
             <td>ID</td>
             <td scope="col">Leite</td>
@@ -34,11 +36,19 @@
             <td scope="row">{{gado.leite}}</td>
             <td>{{gado.racao}}</td>
             <td>{{gado.peso}}</td>
-            <td>{{gado.situacao}}</td>
+            {% if gado.situacao == 1 %}
+            <td>Vivo</td>
+            {% endif %}
+            {% if gado.situacao == 0 %}
+            <td>Abate</td>
+            {% endif %}
+            {% if gado.situacao == 2 %}
+            <td>Morto, outra razão.</td>
+            {% endif %}
             <td>{{gado.nascimento|date('d-m-Y')}}</td>
             <td>
                 <a href="{{path('editar_gado',{id: gado.id})}}"
-                    class="btn btn-info btn-icon-split">
+                class="btn btn-outline-info">
                     <span class="icon text-black-50">
                         <i class="fas fa-exclamation-triangle"></i>
                     </span>
@@ -48,11 +58,11 @@
                 <a id="btn-excluir" data-toggle="modal"
                     href="{{path('editar_gado',{id: gado.id})}}"
                     data-target="#myModal" data-id="{{ gado.id }}"
-                    class="btn btn-danger btn-icon-split">
+                    class="btn btn-outline-danger">
                     <span class="icon text-black-50">
                         <i class="fas fa-trash"></i>
                     </span>
-                    <span class="text">Excluir</span>
+                    <span class="text">Enviar ao Abate!</span>
                 </a>
             </td>
         </tr>
