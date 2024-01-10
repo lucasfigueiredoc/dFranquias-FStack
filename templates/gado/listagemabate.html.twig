@@ -27,11 +27,19 @@
         {% for gado in gadoAbate %}
         <tr>
             <td>
-                {% if gado.codigo == NULL %}
-                S/Cod
-                {% else %}
-                {{gado.codigo}}
-                {% endif %}
+                <a href="{{path('editar_gado',{id: gado.id})}}"
+                class="btn btn-outline-info">
+                <span class="icon text-black-50">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </span>
+                <span class="text-dark">
+                    {% if gado.codigo == NULL %}
+                    S/Cod
+                    {% else %}
+                    {{gado.codigo}}
+                    {% endif %}</span>
+            </a>
+
             </td>
             <td scope="row">{{gado.leite}}</td>
             <td>{{gado.racao}}</td>
@@ -47,14 +55,6 @@
             {% endif %}
             <td>{{gado.nascimento|date('d-m-Y')}}</td>
             <td>
-                <a href="{{path('editar_gado',{id: gado.id})}}"
-                    class="btn btn-outline-info">
-                    <span class="icon text-black-50">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </span>
-                    <span class="text">Editar</span>
-                </a>
-
                 <a id="btn-excluir" data-toggle="modal"
                     href="{{path('editar_gado',{id: gado.id})}}"
                     data-target="#myModal" data-id="{{ gado.id }}"

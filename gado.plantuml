@@ -1,5 +1,6 @@
 @startuml
     class gado{
+        -int ID
        -Integer codigo
        -Float leite
        -Float racao

@@ -9,9 +9,10 @@ def random_birthdate():
     return random_date.strftime('%Y-%m-%d')
 
 # Geração de uma query MySQL com 1000 valores sem IDs repetidos
-query = "INSERT INTO `gado` (`id`, `leite`, `racao`, `peso`, `situacao`, `nascimento`) VALUES\n"
+query = "INSERT INTO `gado` (`id`, `codigo`, `leite`, `racao`, `peso`, `situacao`, `nascimento`) VALUES\n"
 
 used_ids = set()
+used_codigos = set()
 
 for _ in range(10000):
     while True:
@@ -20,17 +21,24 @@ for _ in range(10000):
             used_ids.add(id_value)
             break
 
+    while True:
+        codigo_value = random.randint(1, 999999)
+        if codigo_value not in used_codigos:
+            used_codigos.add(codigo_value)
+            break
+
     leite_value = round(random.uniform(0, 186), 2)
     racao_value = random.randint(0, 500)
     peso_value = random.randint(160, 1410)
     situacao_value = random.randint(0, 3)
     nascimento_value = random_birthdate()
 
-    query += f"({id_value}, {leite_value}, {racao_value}, {peso_value}, {situacao_value}, '{nascimento_value}'),\n"
+    query += f"({id_value}, {codigo_value}, {leite_value}, {racao_value}, {peso_value}, {situacao_value}, '{nascimento_value}'),\n"
 
 # Remover a vírgula extra no final
 query = query.rstrip(",\n")
 
-file = open("arquivo.txt","w")
+
+file = open("arquivo.txt", "w")
 file.write(query)
 file.close()

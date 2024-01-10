@@ -4,131 +4,129 @@
 
 {% block body %}
 
+    <a href="{{path('adicionar_gado')}}"
+        class="btn btn-secondary btn-icon-split btn-sm">
+        <span class="icon text-white-50">
+            <i class="fas fa-arrow-right"></i>
+        </span>
+        <span class="text  pull-right">Adicionar Gado</span>
+    </a>
 
-
-<a href="{{path('adicionar_gado')}}"
-    class="btn btn-secondary btn-icon-split btn-sm">
-    <span class="icon text-white-50">
-        <i class="fas fa-arrow-right"></i>
-    </span>
-    <span class="text  pull-right">Adicionar Gado</span>
-</a>
-
-<div class="card-header">
-    <div class="row">
-        <div class="col align-self-center">
-            <h4 class="m-0">{{titulo}}</h4>
+    <div class="card-header">
+        <div class="row">
+            <div class="col align-self-center">
+                <h4 class="m-0">{{titulo}}</h4>
+            </div>
         </div>
     </div>
-</div>
 
-<table class="table table-striped">
-    <thead class="thead-dark">
+    <table class="table table-striped">
+        <thead class="thead-dark">
 
-        <tr>
-            <td>Código</td>
-            <td scope="col">Leite</td>
-            <td scope="col">Ração</td>
-            <td scope="col">Peso</td>
-            <td scope="col">Situação</td>
-            <td scope="col">Nascimento</td>
-            <td scope="col"> </td>
-        </tr>
+            <tr>
+                <td>Código</td>
+                <td scope="col">Leite</td>
+                <td scope="col">Ração</td>
+                <td scope="col">Peso</td>
+                <td scope="col">Situação</td>
+                <td scope="col">Nascimento</td>
+                <td scope="col"> </td>
+            </tr>
 
-    </thead>
+        </thead>
 
-    <tbody>
+        <tbody>
 
-        {% for gado in gados %}
+            {% for gado in gados %}
 
-        <tr>
+            <tr>
 
-            <td>
-                {% if gado.codigo == NULL %}
-                S/Cod
-                {% else %}
-                {{gado.codigo}}
+                <td>
+                    <a href="{{path('editar_gado',{id: gado.id})}}"
+                        class="btn btn-outline-info">
+                        <span class="icon text-black-50">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </span>
+                        <span class="text-dark">
+                            {% if gado.codigo == NULL %}
+                            S/Cod
+                            {% else %}
+                            {{gado.codigo}}
+                            {% endif %}</span>
+                    </a>
+
+                    <a id="btn-excluir" data-toggle="modal"
+                        href="{{path('editar_gado',{id: gado.id})}}"
+                        data-target="#myModal" data-id="{{ gado.id }}"
+                        class="btn btn-outline-danger rounded-circle">
+                        <span class="icon text-black-50">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                    </a>
+                </td>
+                <td scope="row">{{gado.leite}}</td>
+                <td>{{gado.racao}}</td>
+                <td>{{gado.peso}}</td>
+
+                {% if gado.situacao == 1 %}
+                <td>Vivo</td>
                 {% endif %}
-            </td>
-            <td scope="row">{{gado.leite}}</td>
-            <td>{{gado.racao}}</td>
-            <td>{{gado.peso}}</td>
+                {% if gado.situacao == 0 %}
+                <td>Abate</td>
+                {% endif %}
+                {% if gado.situacao == 2 %}
+                <td>Morto, outra razão.</td>
+                {% endif %}
 
-            {% if gado.situacao == 1 %}
-            <td>Vivo</td>
-            {% endif %}
-            {% if gado.situacao == 0 %}
-            <td>Abate</td>
-            {% endif %}
-            {% if gado.situacao == 2 %}
-            <td>Morto, outra razão.</td>
-            {% endif %}
+                <td>{{gado.nascimento|date('d-m-Y')}}</td>
 
-            <td>{{gado.nascimento|date('d-m-Y')}}</td>
+                <td>
 
-            <td>
-                <a href="{{path('editar_gado',{id: gado.id})}}"
-                    class="btn btn-outline-info">
-                    <span class="icon text-black-50">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </span>
-                    <span class="text">Editar</span>
-                </a>
+                </td>
 
-                <a id="btn-excluir" data-toggle="modal"
-                    href="{{path('editar_gado',{id: gado.id})}}"
-                    data-target="#myModal" data-id="{{ gado.id }}"
-                    class="btn btn-outline-danger">
-                    <span class="icon text-black-50">
-                        <i class="fas fa-trash"></i>
-                    </span>
-                    <span class="text">Excluir</span>
-                </a>
-            </td>
+            </tr>
 
-        </tr>
+            {% endfor %}
 
-        {% endfor %}
+        </tbody>
+    </table>
 
-    </tbody>
-</table>
+    <div class="navigation">
+        {{ knp_pagination_render(gados) }}
+    </div>
 
-<div class="navigation">
-    {{ knp_pagination_render(gados) }}
-</div>
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-<div class="modal" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
+                <!-- header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Atenção!</h4>
+                    <button type="button" class="close"
+                        data-dismiss="modal">&times;</button>
+                </div>
 
-            <!-- header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Atenção!</h4>
-                <button type="button" class="close"
-                    data-dismiss="modal">&times;</button>
+                <!-- body -->
+                <div class="modal-body">
+                    <p>Deseja realmente excluir o animal?</p>
+                </div>
+
+                <!-- footer -->
+                <div class="modal-footer">
+
+                    <a id="excluir" class="btn btn-danger btn-sm">Sim, Excluir!</a>
+                </div>
+
             </div>
-
-            <!-- body -->
-            <div class="modal-body">
-                <p>Deseja realmente excluir o animal?</p>
-            </div>
-
-            <!-- footer -->
-            <div class="modal-footer">
-
-                <a id="excluir" class="btn btn-danger btn-sm">Sim, Excluir!</a>
-            </div>
-
         </div>
     </div>
-</div>
 
-<script>
-    $(document).on('click', '#btn-excluir', function (e) {
-        a = document.getElementById('excluir');
-        const id =  $(this).data('id');
-        a.setAttribute("href", "/gado/excluir/" + id);
-    });
-</script>
+    <script>
+        $(document).on('click', '#btn-excluir', function (e) {
+            a = document.getElementById('excluir');
+            const id =  $(this).data('id');
+            a.setAttribute("href", "/gado/excluir/" + id);
+        });
+    </script>
 
 {% endblock body %}
