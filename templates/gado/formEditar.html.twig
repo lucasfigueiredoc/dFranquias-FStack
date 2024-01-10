@@ -3,11 +3,7 @@
 {% block title %} {{ titulo }} {% endblock %}
 
 {% block body %}
-{% for message in app.flashes('commit') %}
-<div class='alert alert-success'>
-  {{ message }}
-</div>
-{% endfor %}
+
 {{ form_start(form, { attr: { class: form_css|default('') } }) }}
 <div class="container">
   <div class="container d-flex justify-content-center align-items-center"

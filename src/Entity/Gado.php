@@ -43,10 +43,6 @@ class Gado
     ]
     private ?\DateTimeInterface $nascimento = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true, unique=true)
-     * @Assert\Type(type="numeric", message="O valor deve ser numérico.")
-     */
     #[ORM\Column(nullable: true)]
     private ?int $codigo = null;
 

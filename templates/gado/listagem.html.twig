@@ -5,9 +5,15 @@
 {% block body %}
 
 {% for message in app.flashes('commit') %}
-<div class='alert alert-success'>
-    {{ message }}
-</div>
+  {% if 'sucesso' in message %}
+    <div class="alert alert-warning" role="alert">
+      {{ message }}
+    </div>
+  {% else %}
+    <div class="alert alert-warning" role="alert">
+      {{ message }}
+    </div>
+    {% endif %}
 {% endfor %}
 
 <a href="{{path('adicionar_gado')}}"

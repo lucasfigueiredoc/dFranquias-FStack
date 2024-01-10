@@ -28,38 +28,27 @@ class GadoRepository extends ServiceEntityRepository
     ## Escolha deste tipo de formataçao do Builder por ser facilmente modificavel, podendo ultilizar até variaveis externas da funçao chamada.
     {
         $queryBuilder = $this->createQueryBuilder('e');
-        $consumoRacao = $queryBuilder->expr()->quot('e.racao', 7); ## Dividindo o valor produzido pelos dias da semana
-        $pesoArrobaBR = $queryBuilder->expr()->prod('e.peso', 15); ## Separar o peso do animal pelo arroba BR, que é 15
+        $consumoRacao = $queryBuilder->expr()->quot('e.racao', 7); ## Dividindo o valor produzido pelos dias da semana 
 
         #Query para produçao de leite menor que 40
-        
         $queryBuilder
-            ->orWhere('e.leite <= :producaoleite')
-            ->setParameter('producaoleite', 40);
+            ->Where('e.leite < :producaoleite')
+            ->setParameter('producaoleite', 40)
 
         #Query para consumo maior que 50 quilos de raçao diario e produza menos que 70 litros semanal
-        $queryBuilder
-            ->orWhere('e.racao > :consumoracao AND e.leite > :producaoleite')
+            ->orWhere('e.racao < :consumoracao AND e.leite < :producaoleite')
             ->setParameter('consumoracao', $consumoRacao)
-            ->setParameter('producaoleite', 70);
-
+            ->setParameter('producaoleite', 70)
 
         #Query para separar animais com peso maior que 18 arrobas brasileiro.
-        $queryBuilder
-            ->orWhere('e.situacao > :param2')
-            ->setParameter('param2', $pesoArrobaBR);
+            ->orWhere('e.peso/15 > :param2')
+            ->setParameter('param2', 18)
 
         #Query para animais com mais de 5 anos
-        $dataAtual = new \DateTime();
-        $dataNascimentoMinima = $dataAtual->modify('-5 years');
-
-        $queryBuilder
             ->orWhere('e.nascimento < :dataNascimentoMinima')
-            ->setParameter('dataNascimentoMinima', $dataNascimentoMinima);
+            ->setParameter('dataNascimentoMinima', new \DateTime('-5 year'))
 
         #Query para listar apenas animais vivos
-
-        $queryBuilder
             ->andWhere('e.situacao = :estado')
             ->setParameter('estado', 1);
             
@@ -73,21 +62,19 @@ class GadoRepository extends ServiceEntityRepository
 
         $queryBuilder = $this->createQueryBuilder('e');
 
-        
-        $queryBuilder
-            ->andWhere('e.racao > :param2')
-            ->setParameter('param2', 500);
-
-        $dataAtual = new \DateTime();
-        $dataNascimentoMaxima = (new \DateTime())->modify('-1 year');
-        $queryBuilder->setMaxResults(5);
+        $queryBuilder->setMaxResults(5); ## permitindo apenas 5 resultados na tela
 
         $queryBuilder
-            ->andWhere('e.nascimento >= :dataNascimentoMaxima')
+            ->Where('e.nascimento >= :dataNascimentoMaxima')
             ->andWhere('e.nascimento <= :dataAtual')
-            ->setParameter('dataNascimentoMaxima', $dataNascimentoMaxima)
-            ->setParameter('dataAtual', $dataAtual);
+            ->setParameter('dataNascimentoMaxima', new \DateTime('-1 year'))
+            ->setParameter('dataAtual', new \DateTime())
+            ->andWhere('e.racao > :racaoo')
+            ->setParameter('racaoo', 500)
 
+            ->andWhere('e.situacao = :estado')
+            ->setParameter('estado', 1);
+            
         return $queryBuilder->getQuery()->getResult();
     }
 

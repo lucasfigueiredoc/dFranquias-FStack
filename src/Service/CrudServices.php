@@ -18,22 +18,27 @@ use App\Controller\Exception;
 class CrudService
 {
     private $entityManager;
+    private $gadoRepository;
+    private $paginator;
 
-    public function __construct( EntityManagerInterface $em)
+    public function __construct()
     {
-        $this->entityManager = $em;
+
     }
 
-    public function adicionar(Request $request,EntityManagerInterface $em): Response
+    public function listar( PaginatorInterface $pg,Request $request,EntityManagerInterface $em,GadoRepository $gadoRepository): Response
     {
-                
+        $data['titulo'] = "Listagem dos animais.";
 
+        $query = $gadoRepository->findAll();
 
-        if($form->isSubmitted() && $form->isValid()){
-            $em->persist($gado);
-            $em->flush();
-        }
+        $data['gados'] = $pg->paginate(
+            $query,
+            $request->query->get('page', 1),
+            10
+        );
 
+        return $this->$data;
 
     }
 

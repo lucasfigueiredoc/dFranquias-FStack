@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Controller\Exception;
-
+use App\Service\CrudService;
 /*
 * @Route("/gado")
 * @UniqueEntity(fields="codigo", entityClass=Gado::class, message="Este número já está em uso.")
@@ -48,8 +48,8 @@ class GadoController extends AbstractController
     {
         $data['titulo'] = "Listagem dos animais.";
 
-        $query = $gadoRepository->findAll();
-
+        $query = $gadoRepository->findAll(); ##Encontrar todos os animais listados
+        ## Gerar paginador baseando na quantidade total de animais, colocando 10 por página
         $data['gados'] = $pg->paginate(
             $query,
             $request->query->get('page', 1),
@@ -62,11 +62,11 @@ class GadoController extends AbstractController
 
     ##$#### Controler para ver animais com dados especificos para o abate
     #[Route("/gado/listagemAbate", name: "listagemAbate_gado")]
-    public function listagemParaAbate(Request $request, GadoRepository $gadoRepository, PaginatorInterface $pg): Response
+    public function listagemParaAbate(GadoRepository $gadoRepository, PaginatorInterface $pg): Response
     {
 
         $data['titulo'] = "Listagem animais para o abate.";
-        $data['gadoAbate'] = $gadoRepository->findAnimaisParaAbate();
+        $data['gadoAbate'] = $gadoRepository->findAnimaisParaAbate(); 
 
         return $this->render('gado/listagemabate.html.twig', $data);
     }
@@ -78,7 +78,7 @@ class GadoController extends AbstractController
 
 
         $data['titulo'] = "Listagem animais abatidos";
-        $data['animaisAbatidos']  = $gadoRepository->countAnimais(0);
+        
         $query = $gadoRepository->findAnimaisAbatidos();
         $data['titulo'] = "Listagem";
         $data['gados'] = $pg->paginate(
@@ -101,23 +101,34 @@ class GadoController extends AbstractController
 
         $form = $this->createForm(GadoType::class, $gado);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted() && $form->isValid())## Verifica se as condiçoes são verdadeiras, se o form tentou ser enviado e se é válido
         {
 
-            $codigo = $gado->getCodigo();
-            $validacao  = $em->getRepository(Gado::class)->findOneBy([
-                'codigo' =>$codigo,
-            ]);
+            $codigo = $gado->getCodigo(); ##captura o código digitado no formulário
+            ## Esta estrutura verifica se a leitura do form é nula, caso seja ela adiciona mesmo assim, caso não, ela vai para verificação de numeros repetidos no banco
+            if($codigo == null){
+                $em->persist($gado);
+                $em->flush();
 
-            if($validacao){
-                $this->addFlash('commit', 'Codigo já existente no banco.');
-            }else{
+                 $this->addFlash('commit', 'Animal adicionado ao sistema!');
+                return $this->redirectToRoute('adicionar_gado');
+            }
+            elseif($codigo !== null){
+                $validacao  = $em->getRepository(Gado::class)->findOneBy([
+                    'codigo' =>$codigo,
+                    'situacao' => 1
+                ]); ##Execulta busca no banco se existe já o mesmo valor registrado no banco.
+                
+                if($validacao){
+                    $this->addFlash('commit', 'Codigo já existente no banco.');##Caso sim, não é comitado e exibe mensagem
+                }else{
+                    #caso valor não seja encontrado, persiste e carrega no banco.
+                    $em->persist($gado);
+                    $em->flush();
 
-            $em->persist($gado);
-            $em->flush();
-
-            $this->addFlash('commit', 'Animal adicionado ao sistema!');
-            return $this->redirectToRoute('adicionar_gado');
+                $this->addFlash('commit', 'Animal adicionado ao sistema!');
+                return $this->redirectToRoute('adicionar_gado');
+                }
             }
         }
 
@@ -131,28 +142,27 @@ class GadoController extends AbstractController
     {
 
         $data['titulo'] = "Editar Animal";
-        $data['idVariavel'] = $id;
-        $gado = $gadoRepository->find($id);
-        $codigo = $gado->getCodigo();
-        $form = $this->createForm(GadoType::class, $gado);
+        $data['idVariavel'] = $id; ##captura id do animal presente para o front
+        $gado = $gadoRepository->find($id); ## busca o animal relativo ao id para carregar no db
+        $codigo = $gado->getCodigo(); ##Captura id do animal em especifico
+        $form = $this->createForm(GadoType::class, $gado); ## Gera  formulario com os dados do respectivo animal
         $form->handleRequest($request);
 
 
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted() && $form->isValid()) ##validação e submitt
         {
-            $codigoForm = $gado->getCodigo();
+            $codigoForm = $gado->getCodigo(); 
 
-            if($codigo !== $codigoForm) 
+            if($codigo !== $codigoForm) ## verificando se o código do formulario é diferente do banco
             {
                 $validacao  = $em->getRepository(Gado::class)->findOneBy([
-                    'codigo' =>$codigo,
-                    'situacao' => 1
+                    'codigo' =>$codigoForm ## se sim, faz a busca no banco para analizar se a alteração e possivel
                 ]);
 
                 if($validacao){
                     $this->addFlash('commit', 'Codigo já existente no banco.');
                 }else{
-
+                    #condição relativa caso haja alteração no código do animal e que não seja existente
                     $em->persist($gado);
                     $em->flush();
 
@@ -160,7 +170,7 @@ class GadoController extends AbstractController
                     return $this->redirectToRoute('adicionar_gado');
                 }
             }else{
-
+                    #condição relativa caso não haja alteração no código do animal
                 $em->persist($gado);
                 $em->flush();
 
@@ -180,7 +190,7 @@ class GadoController extends AbstractController
     {
 
         $gado = $gadoRepository->find($id);
-        $gado->setCodigo(NULL); #### Quando um animal é excluido para liberar o codigo a outro animal, seu codigo é setado como NULO
+        $gado->setCodigo(NULL); #### Seta o código do a
         $em->remove($gado);
         $em->flush();
         
@@ -199,7 +209,7 @@ class GadoController extends AbstractController
 
         $gado = $gadoRepository->find($id);
         $gado->setSituacao(0);
-        $gado->setCodigo(NULL); #### Quando um animal é abatido, para liberar o codigo a outro animal, seu codigo é setado como NULO
+        $gado->setCodigo(NULL); #### Seta o codigo como nulo para poder ser reultilizado em um animal válido
         try {
             $em->persist($gado);
             $em->flush();

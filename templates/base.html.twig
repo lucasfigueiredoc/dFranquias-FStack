@@ -119,6 +119,18 @@
                                     <div class="card-body">
                                         <p class="mb-0">
                                             <div class="col-lg-12 container-fluid">
+                                                {% for message in app.flashes('commit') %}
+                                                {% if 'sucesso' in message %}
+                                                    <div class="alert alert-warning" role="alert">
+                                                    {{ message }}
+                                                    </div>
+                                                {% else %}
+                                                    <div class="alert alert-warning" role="alert">
+                                                    {{ message }}
+                                                    </div>
+                                                    {% endif %}
+                                                {% endfor %}
+
                                                 {% block body %}{% endblock %}
                                             </div>
                                         </p>

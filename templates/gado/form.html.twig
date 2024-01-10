@@ -5,14 +5,14 @@
 {% block body %}
 {% for message in app.flashes('commit') %}
   {% if 'sucesso' in message %}
-    <div class='alert alert-success'>
+    <div class="alert alert-warning" role="alert">
       {{ message }}
     </div>
   {% else %}
-    <div class='alert alert-check'>
+    <div class="alert alert-warning" role="alert">
       {{ message }}
     </div>
-  {% endif %}
+    {% endif %}
 {% endfor %}
 
 {{ form_start(form, { attr: { class: form_css|default('') } }) }}
