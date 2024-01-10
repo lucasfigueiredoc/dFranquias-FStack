@@ -36,12 +36,12 @@ class GadoRepository extends ServiceEntityRepository
             ->setParameter('producaoleite', 40)
 
         #Query para consumo maior que 50 quilos de raçao diario e produza menos que 70 litros semanal
-            ->orWhere('e.racao < :consumoracao AND e.leite < :producaoleite')
-            ->setParameter('consumoracao', $consumoRacao)
+            ->orWhere('(e.racao/7) > :consumoracao AND e.leite < :producaoleite')
+            ->setParameter('consumoracao', 50)
             ->setParameter('producaoleite', 70)
 
         #Query para separar animais com peso maior que 18 arrobas brasileiro.
-            ->orWhere('e.peso/15 > :param2')
+            ->orWhere('(e.peso/15) > :param2')
             ->setParameter('param2', 18)
 
         #Query para animais com mais de 5 anos

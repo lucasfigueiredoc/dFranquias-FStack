@@ -105,7 +105,7 @@ class GadoController extends AbstractController
         {
 
             $codigo = $gado->getCodigo(); ##captura o código digitado no formulário
-            ## Esta estrutura verifica se a leitura do form é nula, caso seja ela adiciona mesmo assim, caso não, ela vai para verificação de numeros repetidos no banco
+            ## Esta estrutura verifica se a leitura do form é nula, caso seja ela adiciona mesmo assim, caso não, ela vai para verificação de numeros repetidos no banco                                                    
             if($codigo == null){
                 $em->persist($gado);
                 $em->flush();
@@ -210,21 +210,19 @@ class GadoController extends AbstractController
         $gado = $gadoRepository->find($id);
         $gado->setSituacao(0);
         $gado->setCodigo(NULL); #### Seta o codigo como nulo para poder ser reultilizado em um animal válido
-        try {
-            $em->persist($gado);
-            $em->flush();
 
-            $this->addFlash(
-                'commit',
-                'Animal registrado como abatido!'
-            );
-        } catch (Exception $e) {
-            echo "Exceção capturada: " . $e->getMessage();
-        }
+        $em->persist($gado);
+        $em->flush();
+
+        $this->addFlash(
+            'commit',
+            'Animal registrado como abatido!'
+        );
 
         return $this->redirectToRoute('listagemAbate_gado');
     }
 
+    ##Rota responsavel por plotar os gráficos, aqui são pegos os resultados das querys e armazenadas em var, enviadas a view
     #[Route("/graficos", name: "graficos")]
     public function graficos(GadoRepository $gadoRepository,): Response
     {
