@@ -44,6 +44,9 @@ class Gado
     private ?\DateTimeInterface $nascimento = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\PositiveOrZero(
+        message: 'Insira valor positivo para peso.'
+    )]
     private ?int $codigo = null;
 
     public function getId(): ?int
