@@ -29,8 +29,14 @@ Esta aplicação tem como requisito o [teste](https://drive.google.com/file/d/1y
 
 ## Execução do projeto
 
+    O projeto está configurado para rodar com o Docker, clone este repositorio e execute a próxima linha com o Docker instalado em sua máquina.
 
-Execução do projeto
+        docker compose up --build
+
+    Para acessar : localhost:8000
+
+## Execução do projeto sem o docker
+
 Após verificar as dependências, configure o banco de dados. Execute o primeiro comando para criá-lo:
 
        php bin/console doctrine:database:create
