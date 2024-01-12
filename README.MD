@@ -37,16 +37,29 @@ Esta aplicação tem como requisito o [teste](https://drive.google.com/file/d/1y
 
 ## Execução do projeto sem o docker
 
-Após verificar as dependências, configure o banco de dados. Execute o primeiro comando para criá-lo:
+#### db preenchido
+Após verificar as dependências, caso queira executar o projeto com um banco já preenchido, siga próximo passo:
+Importe o arquivo anexado no repositório em seu banco de dados, depois execute os comandos do item 1, o sistema estará em funcionamento com o banco pronto.
 
-       php bin/console doctrine:database:create
+#### db vazio
+1- Na pasta raiz do projeto, execute: 
+* verificar todas as dependências do projeto
 
-Na pasta raiz do projeto, há um banco chamado fazenda.sql pronto. Basta importá-lo para iniciar os testes. Também está disponível um script em Python que gera animais com números variados aleatórios para preencher o banco. Este script pode ser editado com os parâmetros desejados. No arquivo arquivo.txt, já existe uma query pronta, caso precise de um script pronto.
+    composer require symfony/runtime 
 
-Com o banco conectado e preenchido, na pasta raiz execute:
+* startar fw
 
+    symfony serve:start              
 
-    symfony serve:start
+2- Após, crie o banco de dados com o seguinte comando: 
+
+    php bin/console doctrine:database:create
+
+3- Logo em seguida, ultilize este para executar a migration:
+
+    php bin/console doctrine:migrations:migrate
+
+Confirme todos os parametros e o projeto estará em funcionamento na localhost.
 
 # Entidade
 
@@ -54,3 +67,8 @@ Com o banco conectado e preenchido, na pasta raiz execute:
 Animais podem ser adicionados, editados e excluídos. Todo animal vivo deve ter um código; animais abatidos e mortos não precisam.
 
 ![Alt text](image.png)
+
+
+### Banco de dados
+
+De acordo com o tipo de execução, descomentar a linha desejada no .env para configuração do db local ou docker.
