@@ -24,8 +24,18 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Banco de dados: `fazenda`
+--
+CREATE DATABASE IF NOT EXISTS `fazenda` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `fazenda`;
+
+-- --------------------
+
+--
 -- Estrutura para tabela `doctrine_migration_versions`
 --
+
+
 
 CREATE TABLE `doctrine_migration_versions` (
   `version` varchar(191) NOT NULL,
@@ -39,7 +49,7 @@ CREATE TABLE `doctrine_migration_versions` (
 
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 ('DoctrineMigrations\\Version20240103094933', '2024-01-03 10:49:43', 62),
-('DoctrineMigrations\\Version20240104212448', '2024-01-04 22:24:59', 741),
+-- ('DoctrineMigrations\\Version20240104212448', '2024-01-04 22:24:59', 741),
 ('DoctrineMigrations\\Version20240109005516', '2024-01-09 02:12:04', 577);
 
 -- --------------------------------------------------------

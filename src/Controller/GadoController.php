@@ -62,11 +62,17 @@ class GadoController extends AbstractController
 
     ##$#### Controler para ver animais com dados especificos para o abate
     #[Route("/gado/listagemAbate", name: "listagemAbate_gado")]
-    public function listagemParaAbate(GadoRepository $gadoRepository, PaginatorInterface $pg): Response
+    public function listagemParaAbate(Request $request, GadoRepository $gadoRepository, PaginatorInterface $pg): Response
     {
 
         $data['titulo'] = "Listagem animais para o abate.";
-        $data['gadoAbate'] = $gadoRepository->findAnimaisParaAbate(); 
+
+        $query = $gadoRepository->findAnimaisParaAbate(); 
+        $data['gadoAbate'] = $pg->paginate(
+            $query,
+            $request->query->get('page',1),
+            10
+        );
 
         return $this->render('gado/listagemabate.html.twig', $data);
     }

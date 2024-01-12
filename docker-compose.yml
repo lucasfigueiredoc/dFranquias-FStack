@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  database:
+    container_name: mysql ## nome na listagem dos containers up
+    build: 
+      context: .
+      dockerfile: Dockerfile.database ## dockerfile especifico do db a ser chamado
+    command: --innodb-use-native-aio=0 ## primeiro comando a rodar quando a vm subir
+    restart: always ##
+    tty: true
+    networks:
+    - symfony_net
+  
+  app:
+    container_name: app
+    entrypoint: bash -c "wait-for database:3306 -t 40 -- symfony serve:start"
+    build:
+      context: .
+      dockerfile: Dockerfile ##arquivo docker especifico da aplicação em si
+    env_file:
+      - .env  #configuraçoes
+    ports:
+      - 8000:8000 # portas de comunicação entre vm e host
+    tty: true
+    depends_on:
+      - database ## segundo comando para esperar o db subir, antes da aplicação
+    networks:
+      - symfony_net
+
+networks:
+  symfony_net:
+    driver: bridge
