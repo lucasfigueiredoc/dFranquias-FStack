@@ -28,7 +28,6 @@ class GadoRepository extends ServiceEntityRepository
     ## Escolha deste tipo de formataçao do Builder por ser facilmente modificavel, podendo ultilizar até variaveis externas da funçao chamada.
     {
         $queryBuilder = $this->createQueryBuilder('e');
-        $consumoRacao = $queryBuilder->expr()->quot('e.racao', 7); ## Dividindo o valor produzido pelos dias da semana 
 
         #Query para produçao de leite menor que 40
         $queryBuilder
