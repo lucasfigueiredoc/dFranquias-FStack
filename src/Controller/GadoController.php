@@ -151,31 +151,31 @@ class GadoController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) ##validação e submitt
         {
-            $codigoForm = $gado->getCodigo(); 
-
-            if($codigo !== $codigoForm) ## verificando se o código do formulario é diferente do banco
-            {
-                $validacao  = $em->getRepository(Gado::class)->findOneBy([
-                    'codigo' =>$codigoForm ## se sim, faz a busca no banco para analizar se a alteração e possivel
-                ]);
-
-                if($validacao){
-                    $this->addFlash('commit', 'Codigo já existente no banco.');
-                }else{
-                    #condição relativa caso haja alteração no código do animal e que não seja existente
-                    $em->persist($gado);
-                    $em->flush();
-
-                    $this->addFlash('commit', 'Animal adicionado ao sistema!');
-                    return $this->redirectToRoute('adicionar_gado');
-                }
-            }else{
-                    #condição relativa caso não haja alteração no código do animal
+            $codigo = $gado->getCodigo(); ##captura o código digitado no formulário
+            ## Esta estrutura verifica se a leitura do form é nula, caso seja ela adiciona mesmo assim, caso não, ela vai para verificação de numeros repetidos no banco                                                    
+            if($codigo == null){
                 $em->persist($gado);
                 $em->flush();
 
-                $this->addFlash('commit', 'Animal editado ao sistema!');
+                 $this->addFlash('commit', 'Animal editado no sistema!');
                 return $this->redirectToRoute('adicionar_gado');
+            }
+            elseif($codigo !== null){
+                $validacao  = $em->getRepository(Gado::class)->findOneBy([
+                    'codigo' =>$codigo,
+                    'situacao' => 1
+                ]); ##Execulta busca no banco se existe já o mesmo valor registrado no banco.
+                
+                if($validacao){
+                    $this->addFlash('commit', 'Codigo já existente no banco.');##Caso sim, não é comitado e exibe mensagem
+                }else{
+                    #caso valor não seja encontrado, persiste e carrega no banco.
+                    $em->persist($gado);
+                    $em->flush();
+
+                $this->addFlash('commit', 'Animal adicionado ao sistema!');
+                return $this->redirectToRoute('adicionar_gado');
+                }
             }
             
 
