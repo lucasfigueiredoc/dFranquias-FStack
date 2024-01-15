@@ -45,8 +45,8 @@ class GadoRepository extends ServiceEntityRepository
             ->setParameter('param2', 18)
 
         #Query para animais com mais de 5 anos
-            ->orWhere('e.nascimento < :dataNascimentoMinima')
-            ->setParameter('dataNascimentoMinima', new \DateTime('-5 year'))
+            ->orWhere('e.nascimento < :nascimentoData')
+            ->setParameter('nascimentoData', new \DateTime('-5 year'))
 
         #Query para listar apenas animais vivos
             ->andWhere('e.situacao = :estado')

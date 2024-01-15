@@ -1,9 +1,9 @@
 
 # Teste-FullStack_DFranquias
 
-    Software web responsável por gerenciar o gado em uma fazenda.
+    Software web PHP em symfony responsável por gerenciar o gados em uma fazenda.
 
-Esta aplicação tem como requisito o [teste](https://drive.google.com/file/d/1yP_Ld1zXsgh8FXGRk8lODTsN48BusBHh/view?usp=sharing) para a vaga na DFranquias.
+Esta aplicação tem como objetivo cumprir o -> [teste](https://drive.google.com/file/d/1yP_Ld1zXsgh8FXGRk8lODTsN48BusBHh/view?usp=sharing) <- para a vaga na DFranquias.
 
 ## Stack
 * Implementação feita em PHP >=8.0.*;
