@@ -11,14 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Controller\Exception;
 use App\Service\CrudService;
-/*
-* @Route("/gado")
-* @UniqueEntity(fields="codigo", entityClass=Gado::class, message="Este número já está em uso.")
-*/
-
 
 class GadoController extends AbstractController
 {

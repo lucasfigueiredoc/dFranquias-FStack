@@ -27,13 +27,31 @@ class GadoRepository extends ServiceEntityRepository
     public function findAnimaisParaAbate()
     ## Escolha deste tipo de formataçao do Builder por ser facilmente modificavel, podendo ultilizar até variaveis externas da funçao chamada.
     {
-        return $this->createQueryBuilder('e')
-            ->where('e.situacao = 1')
-            ->andWhere('e.leite < 40 or e.nascimento <= :data or (e.peso/15) > 18 or (e.leite < 70 and e.racao > (50/7))')
-            ->setParameter('data', date('Y-m-d', strtotime('-5 year')))
-            ->orderBy('e.id')
-            ->getQuery()
-            ->getResult();
+        $queryBuilder = $this->createQueryBuilder('e');
+        $consumoRacao = $queryBuilder->expr()->quot('e.racao', 7); ## Dividindo o valor produzido pelos dias da semana 
+
+        #Query para produçao de leite menor que 40
+        $queryBuilder
+            ->Where('e.leite < :producaoleite1')
+            ->setParameter('producaoleite1', 40)
+
+        #Query para consumo maior que 50 quilos de raçao diario e produza menos que 70 litros semanal
+            ->orWhere('(e.racao/7) > :consumoracao AND e.leite < :producaoleite')
+            ->setParameter('consumoracao', 50)
+            ->setParameter('producaoleite', 70)
+
+        #Query para separar animais com peso maior que 18 arrobas brasileiro.
+            ->orWhere('(e.peso/15) > :param2')
+            ->setParameter('param2', 18)
+
+        #Query para animais com mais de 5 anos
+            ->orWhere('e.nascimento < :dataNascimentoMinima')
+            ->setParameter('dataNascimentoMinima', new \DateTime('-5 year'))
+
+        #Query para listar apenas animais vivos
+            ->andWhere('e.situacao = :estado')
+            ->setParameter('estado', 1);
+            
 
         return $queryBuilder->getQuery()->getResult();
     }
